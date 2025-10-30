@@ -1,4 +1,5 @@
-# คำถามท้ายบท 01
+
+# คำถามท้ายบท LAB01-setup-first-project
 
 
 ## 1.ไฟล์ใดบ้างที่จำเป็นสำหรับโปรเจกต์ ESP-IDF ขั้นต่ำ?
@@ -29,3 +30,55 @@ compile_commands.json	ใช้โดย VSCode หรือ IDE เพื่อ
 delay() (หรือ for loop delay แบบ Arduino) จะ หยุด CPU ทั้งหมด
 
 vTaskDelay() จะ พักเฉพาะ task ปัจจุบัน แล้วให้ CPU ไปทำงาน task อื่นได้
+
+
+
+# คำถามท้ายบท Lab02-hello-world
+
+## 1.ความแตกต่างระหว่าง printf() และ ESP_LOGI() คืออะไร?
+
+printf()  แสดงข้อความธรรมดา เหมือนภาษา C ทั่วไป ไม่มีระบบจัดการระดับ log
+
+ESP_LOGI(TAG, "ข้อความ") ใช้ระบบ log ของ ESP-IDF มีระดับ (ERROR, WARN, INFO, DEBUG, VERBOSE) และมี tag ช่วยระบุแหล่งที่มา
+
+## 2.Log level ไหนที่จะแสดงใน default configuration?
+
+ค่า default คือ INFO แสดงเฉพาะระดับ ERROR, WARN, และ INFO
+
+## 3.การใช้ ESP_ERROR_CHECK() มีประโยชน์อย่างไร?
+
+ใช้ตรวจผลลัพธ์ของฟังก์ชันที่คืนค่า esp_err_t ถ้ามี error  ระบบจะแจ้ง log และ รีสตาร์ตอัตโนมัติ ทำให้โค้ดปลอดภัยและดีบักง่ายกว่า
+
+## 4.คำสั่งใดในการออกจาก Monitor mode?
+
+กด Ctrl + ] เพื่อออกจากโหมด monitor และกลับไป command line
+
+## 5.การตั้งค่า Log level สำหรับ tag เฉพาะทำอย่างไร?
+
+เช่น esp_log_level_set("wifi", ESP_LOG_ERROR); จะให้ tag "wifi" แสดงเฉพาะ log ระดับ ERROR เท่านั้น
+
+# คำถามท้ายบท Lab03-first-task
+
+## 1.เหตุใด Task function ต้องมี infinite loop?
+
+เพราะถ้าไม่มีลูป Task จะจบและถูกลบไปทันทีหลังรันเสร็จ การใช้ while(1) ทำให้ Task ทำงานซ้ำ ๆ เช่น อ่าน sensor หรือกระพริบไฟ
+
+## 2.ความหมายของ stack size ใน xTaskCreate() คืออะไร?
+
+คือ พื้นที่หน่วยความจำที่ Task ใช้เก็บตัวแปรภายในของตัวเอง หน่วยเป็น word (4 byte) เช่น 2048 หมายถึง 8 KB stack
+
+## 3.ความแตกต่างระหว่าง vTaskDelay() และ vTaskDelayUntil()?
+
+vTaskDelay() → หน่วงเวลานับจากตอนนี้ (delay แบบทั่วไป)
+
+vTaskDelayUntil() → หน่วงโดยอิงเวลารอบก่อน เพื่อให้คาบเวลาเท่ากันทุกครั้ง เหมาะกับงานแบบ real-time
+
+## 4.การใช้ vTaskDelete(NULL) vs vTaskDelete(handle) ต่างกันอย่างไร?
+
+vTaskDelete(NULL) → ให้ Task ปัจจุบันหยุดตัวเอง
+
+vTaskDelete(handle) → ลบ Task อื่น โดยใช้ handle ที่ระบุไว้ตอนสร้าง
+
+## 5.Priority 0 กับ Priority 24 อันไหนสูงกว่า?
+
+Priority 24 สูงกว่า Priority 0 เพราะ ตัวเลขยิ่งมากความสำคัญยิ่งสูง 
